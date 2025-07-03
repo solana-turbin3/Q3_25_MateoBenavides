@@ -1,0 +1,28 @@
+{
+    "name": "GOJO",
+    "symbol": "GJJK",
+    "description": "between heaven and earth i alone am the honored one",
+    "image": "https://i.imgur.com/xVkdSQD.png",
+    "attributes": [
+      {
+        "trait_type": "Type",
+        "value": "Jujutsu Kaisen Token"
+      },
+      {
+        "trait_type": "Creator",
+        "value": "Six Eyes User"
+      },
+      {
+        "trait_type": "Power",
+        "value": "Limitless"
+      }
+    ],
+    "properties": {
+      "files": [
+        {
+          "uri": "https://i.imgur.com/xVkdSQD.png",
+          "type": "image/png"
+        }
+      ]
+    }
+  }

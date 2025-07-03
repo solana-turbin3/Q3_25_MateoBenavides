@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GOJO Token Viewer</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a1a; color: white; }
+        .token-card { max-width: 400px; margin: 0 auto; text-align: center; background: #2a2a2a; padding: 20px; border-radius: 10px; }
+        .token-image { width: 200px; height: 200px; border-radius: 10px; margin: 20px 0; object-fit: cover; }
+        .token-name { font-size: 24px; font-weight: bold; margin: 10px 0; }
+        .token-symbol { font-size: 18px; color: #888; margin: 5px 0; }
+        .token-description { font-style: italic; margin: 15px 0; color: #ccc; }
+        .debug { background: #333; padding: 10px; margin: 10px 0; border-radius: 5px; font-family: monospace; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="token-card">
+        <h1>🔥 GOJO Token 🔥</h1>
+        <div id="tokenInfo">Loading...</div>
+        <div id="debug" class="debug"></div>
+    </div>
+
+    <script>
+        async function loadTokenMetadata() {
+            const debugDiv = document.getElementById('debug');
+            const tokenInfoDiv = document.getElementById('tokenInfo');
+            
+            try {
+                debugDiv.innerHTML = 'Fetching metadata from public URL...';
+                
+                const url = 'https://api.jsonbin.io/v3/b/68657c7f8561e97a50306730/latest';
+                console.log('Fetching from:', url);
+                
+                const response = await fetch(url);
+                
+                debugDiv.innerHTML = `Response status: ${response.status}`;
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Full response:', data);
+                
+                const metadata = data.record;
+                console.log('Extracted metadata:', metadata);
+                
+                debugDiv.innerHTML = `✅ Metadata loaded successfully!<br>Image URL: ${metadata.image}`;
+                
+                tokenInfoDiv.innerHTML = `
+                    <img src="${metadata.image}" alt="${metadata.name}" class="token-image" 
+                         onload="console.log('Image loaded successfully')"
+                         onerror="console.log('Image failed to load'); this.style.display='none'" />
+                    <div class="token-name">${metadata.name}</div>
+                    <div class="token-symbol">$${metadata.symbol}</div>
+                    <div class="token-description">"${metadata.description}"</div>
+                    <p><strong>Mint:</strong> A932WUS18J3CHkDQ6tTqJJbxj9SP9QHf5QRsApFCMpFX</p>
+                    <p><strong>Supply:</strong> 1,000 tokens</p>
+                    <p><strong>Network:</strong> Solana Devnet</p>
+                `;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                debugDiv.innerHTML = `❌ Error: ${error.message}`;
+                tokenInfoDiv.innerHTML = `
+                    <div class="token-name">GOJO</div>
+                    <div class="token-symbol">$GJJK</div>
+                    <div class="token-description">"between heaven and earth i alone am the honored one"</div>
+                    <p><strong>Mint:</strong> A932WUS18J3CHkDQ6tTqJJbxj9SP9QHf5QRsApFCMpFX</p>
+                    <p><strong>Supply:</strong> 1,000 tokens</p>
+                    <p><strong>Network:</strong> Solana Devnet</p>
+                    <p style="color: orange;">⚠️ Could not load metadata from server</p>
+                `;
+            }
+        }
+        
+        loadTokenMetadata();
+    </script>
+</body>
+</html>
